@@ -5,13 +5,15 @@
  */
 package animation;
 
+import java.awt.Point;
+
 /**
  *
  * @author Name
  */
 public class BewegungsBasis {
-    int pixX;
-    int pixY;
+    protected int pixX;
+    protected int pixY;
     int maxBreite;
     int maxHoehe;
     public BewegungsBasis(int startX, int startY, int frameBreite, int frameHoehe){
@@ -30,15 +32,9 @@ public class BewegungsBasis {
             pixX += changeX;
             pixY += changeY;
     }
-    public int[] getPosition(){
-        int[] position = {pixX, pixY};
+    public Point getPosition(){
+        Point position = new Point(pixX, pixY);
         return position;
     }
 
-    void addPosition(int i, int i0) {
-    }
-
-    int[] getLastPoint() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 }

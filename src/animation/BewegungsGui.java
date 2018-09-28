@@ -7,6 +7,7 @@ package animation;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.event.ActionListener;
 import javax.swing.Timer;
 
@@ -15,48 +16,60 @@ import javax.swing.Timer;
  * @author Name
  */
 public class BewegungsGui extends javax.swing.JPanel {
+
     BewegungsBasis[] alleBeweger;
+
     public BewegungsGui() {
         initComponents();
         CustomMouseListener cml = new CustomMouseListener();
+        /*
+        
+        Objekt anlegen mit Ref.
+        
+        
+         */
+        BewegungCustom customBeweger = new BewegungCustom(10, 10, 1000, 1000);
         addMouseListener(cml);
         BewegungsBasis[] tempBeweger = {
             new BewegungsBasis(10, 10, 1000, 1000),
             new BewegungHorizontal(10, 10, 1000, 1000),
             new BewegungVertikal(10, 10, 1000, 1000),
-            new BewegungCustom(100, 100, 1000, 1000)
+            customBeweger
         };
         alleBeweger = tempBeweger;
         Timer t;
-        t = new Timer(10, new ActionListener(){
+        t = new Timer(5, new ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent e) {
-                int[] oldPosition = alleBeweger[3].getLastPoint();
-                int[] newPosition = cml.getPosition();
-                if(oldPosition[0] != newPosition[0] || oldPosition[1] != newPosition[1]){
-                    alleBeweger[3].addPosition(newPosition[0], newPosition[1]);
+                Point oldPosition = customBeweger.getLastPoint();
+                Point newPosition = cml.getPosition();
+                if (oldPosition != null && newPosition != null) {
+                    if (oldPosition.x != newPosition.x || oldPosition.y != newPosition.y) {
+                        customBeweger.addPosition(newPosition);
+                    }
                 }
-                update();                
+                update();
             }
         });
         t.start();
     }
-    public void paintComponent(Graphics g){
+
+    public void paintComponent(Graphics g) {
         g.setColor(Color.white);
         g.fillRect(0, 0, 1100, 1100);
         g.setColor(Color.black);
-        g.fillRect(alleBeweger[0].getPosition()[0], alleBeweger[0].getPosition()[1], 100, 100);
-        g.fillRect(alleBeweger[1].getPosition()[0], alleBeweger[1].getPosition()[1], 100, 100);
-        g.fillRect(alleBeweger[2].getPosition()[0], alleBeweger[2].getPosition()[1], 100, 100);
-        g.fillRect(alleBeweger[3].getPosition()[0], alleBeweger[3].getPosition()[1], 100, 100);        
+        for (int i = 0; i < alleBeweger.length; i++) {
+            g.fillRect(alleBeweger[i].getPosition().x, alleBeweger[i].getPosition().y, 100, 100);
+        }
     }
-    
-    public void update(){
+
+    public void update() {
         for (int i = 0; i < alleBeweger.length; i++) {
             alleBeweger[i].bewege();
         }
         repaint();
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

@@ -5,6 +5,7 @@
  */
 package animation;
 
+import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -13,16 +14,12 @@ import java.awt.event.MouseListener;
  * @author Name
  */
 public class CustomMouseListener implements MouseListener{
-    private int[] position = new int[2];
+    private Point position;
     @Override
     public void mouseReleased(MouseEvent e) {
-        updatePosition(e.getX(), e.getY());
-    }
-    private void updatePosition(int x, int y) {
-        this.position[0] = x;
-        this.position[1] = y;
-    }
-    public int[] getPosition(){
+        position = new Point(e.getX(), e.getY());
+    }   
+    public Point getPosition(){
         return position;
     }
     // unused //

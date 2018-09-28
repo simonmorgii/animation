@@ -6,61 +6,49 @@
 package animation;
 
 import java.awt.Point;
-import java.util.ArrayList;
 
 /**
  *
  * @author Name
  */
-public class BewegungCustom extends BewegungsBasis{
-    public BewegungCustom(int startX, int startY, int frameBreite, int frameHoehe){
+public class BewegungCustom extends BewegungsBasis {
+
+    public BewegungCustom(int startX, int startY, int frameBreite, int frameHoehe) {
         super(startX, startY, frameBreite, frameHoehe);
-        this.positions[0][0] = 50;
-        this.positions[0][1] = 40;
+        this.positions[0] = new Point(30, 30);
     }
-    private int[][] positions= new int[1][2];    
-    @Override
-    public void addPosition(int x, int y){
-        int[][] newArray = new int[positions.length + 1][2];
-        for (int i = 0; i < newArray[0].length - 1; i++) {
-            newArray[i][0] = positions[i][0];
-            newArray[i][1] = positions[i][1];
+    private Point[] positions = new Point[1];
+    int position = 0;
+    boolean start = true;
+
+    public void addPosition(Point p) {
+        if (p.x != 0 && p.y != 0 && p.x != positions[positions.length - 1].x && p.y != positions[positions.length - 1].y) {
+            Point[] newList = new Point[positions.length + 1];
+            for (int i = 0; i < positions.length; i++) {
+                newList[i] = positions[i];
+            }
+            newList[positions.length] = p;
+            this.positions = newList;
         }
-        newArray[newArray.length - 1][0] = x;
-        newArray[newArray.length - 1][1] = y;
-        this.positions = newArray;
-        System.out.println(this.positions[1][0]);
-        System.out.println(this.positions[1][0]);
     }
-    @Override
-    public int[] getLastPoint(){
-        int[] lastPoint = new int[2];
-        lastPoint[0] = positions[positions.length - 1][0];
-        lastPoint[1] = positions[positions.length - 1][1];
-        return lastPoint;
+
+    public Point getLastPoint() {
+        return positions[positions.length - 1];
     }
-    public void bewege(){
-        if(pixX < positions[0][0]){
+
+    public void bewege() {
+        if (pixX < positions[position].x) {
             pixX++;
         } else {
             pixX--;
         }
-        if (pixY < positions[0][1]) {
+        if (pixY < positions[position].y) {
             pixY++;
         } else {
             pixY--;
         }
-        if (positions.length < 1) {
-            removeActualPoint();
+        if (positions.length > position + 1 && pixX == positions[position].x && pixY == positions[position].y) {
+            position++;
         }
-    }
-    private void removeActualPoint(){
-        System.out.println("remove");
-        int[][] newArray = new int[positions.length - 1][2];
-        for (int i = 0; i < newArray[0].length; i++) {
-            newArray[i][0] = positions[i + 1][0];
-            newArray[i][1] = positions[i + 1][1];
-        }
-        this.positions = newArray;
     }
 }
